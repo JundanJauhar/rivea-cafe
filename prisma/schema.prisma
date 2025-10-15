@@ -1,0 +1,57 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model MenuCategory {
+  id            String         @id
+  title         String
+  parentId      String?        // For subcategories
+  parent        MenuCategory?  @relation("CategoryToSubcategory", fields: [parentId], references: [id])
+  subcategories MenuCategory[] @relation("CategoryToSubcategory")
+  items         MenuItem[]
+}
+
+model MenuItem {
+  id          String   @id
+  name        String
+  price       String?
+  desc        String?
+  img         String?
+  ingredients String?  // Bahan-bahan (stored as JSON string)
+  steps       String?  // Langkah-langkah pembuatan (stored as JSON string)
+  categoryId  String
+  category    MenuCategory @relation(fields: [categoryId], references: [id])
+}
+
+model GalleryItem {
+  id      String  @id
+  title   String?
+  caption String?
+  img     String
+  branch  String? // Cabang/lokasi (e.g., "Jakarta Pusat", "Bandung", "Surabaya")
+}
+
+model Announcement {
+  id          String   @id
+  title       String
+  content     String
+  img         String?  // Optional image
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Review {
+  id          Int      @id @default(autoincrement())
+  name        String
+  rating      Int      // 1-5 stars
+  comment     String
+  isApproved  Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}

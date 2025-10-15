@@ -34,3 +34,38 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
+## Using PostgreSQL with Prisma (local development)
+
+This project includes a Prisma schema and seed script to load the existing dummy data into a PostgreSQL database.
+
+Steps:
+
+1. Install dependencies (adds Prisma and the client):
+
+	```powershell
+	npm install
+	```
+
+2. Create a PostgreSQL database (locally or via a provider) and copy `.env.example` to `.env` then set `DATABASE_URL`.
+
+3. Generate Prisma client and run migrations:
+
+	```powershell
+	npx prisma generate
+	npx prisma migrate dev --name init
+	```
+
+4. Seed the database:
+
+	```powershell
+	npm run prisma:seed
+	```
+
+5. Start the dev server:
+
+	```powershell
+	npm run dev
+	```
+
+API: a simple route is available at `/api/menu` to fetch categories and items from the database.
