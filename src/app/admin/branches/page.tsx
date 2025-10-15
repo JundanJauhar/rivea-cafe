@@ -36,6 +36,8 @@ export default function BranchesAdmin() {
   const [isLoading, setIsLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingBranch, setEditingBranch] = useState<Branch | null>(null);
+  const [isUploading, setIsUploading] = useState(false);
+  const [imagePreview, setImagePreview] = useState<string>('');
   
   // Form state
   const [formData, setFormData] = useState({
@@ -108,7 +110,52 @@ export default function BranchesAdmin() {
       openingHours: branch.openingHours || JSON.stringify(defaultOpeningHours, null, 2),
       isActive: branch.isActive
     });
+    setImagePreview(branch.img || '');
     setIsModalOpen(true);
+  };
+
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    // Validate file type
+    if (!file.type.startsWith('image/')) {
+      alert('File harus berupa gambar!');
+      return;
+    }
+
+    // Validate file size (max 5MB)
+    if (file.size > 5 * 1024 * 1024) {
+      alert('Ukuran file maksimal 5MB!');
+      return;
+    }
+
+    setIsUploading(true);
+
+    try {
+      const formData = new FormData();
+      formData.append('file', file);
+
+      const response = await fetch('/api/upload/branch-image', {
+        method: 'POST',
+        body: formData
+      });
+
+      if (!response.ok) throw new Error('Upload failed');
+
+      const data = await response.json();
+      
+      // Update form data with uploaded image URL
+      setFormData(prev => ({ ...prev, img: data.imageUrl }));
+      setImagePreview(data.imageUrl);
+      
+      alert('Gambar berhasil diupload!');
+    } catch (error) {
+      console.error('Error uploading image:', error);
+      alert('Gagal mengupload gambar');
+    } finally {
+      setIsUploading(false);
+    }
   };
 
   const handleDelete = async (id: string, name: string) => {
@@ -141,6 +188,7 @@ export default function BranchesAdmin() {
       openingHours: JSON.stringify(defaultOpeningHours, null, 2),
       isActive: true
     });
+    setImagePreview('');
     setEditingBranch(null);
   };
 
@@ -356,27 +404,56 @@ export default function BranchesAdmin() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium mb-1">URL Gambar Cabang</label>
-                  <input
-                    type="url"
-                    value={formData.img}
-                    onChange={(e) => setFormData({ ...formData, img: e.target.value })}
-                    placeholder="https://example.com/gambar-cabang.jpg"
-                    className="w-full border rounded-lg px-3 py-2"
-                  />
-                  {formData.img && (
-                    <div className="mt-2">
-                      <p className="text-xs text-gray-500 mb-1">Preview:</p>
-                      <img 
-                        src={formData.img} 
-                        alt="Preview" 
-                        className="w-full h-48 object-cover rounded-lg border"
-                        onError={(e) => {
-                          (e.target as HTMLImageElement).src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="400" height="200"%3E%3Crect fill="%23ddd" width="400" height="200"/%3E%3Ctext fill="%23999" x="50%25" y="50%25" text-anchor="middle" dy=".3em"%3EGambar tidak valid%3C/text%3E%3C/svg%3E';
-                        }}
+                  <label className="block text-sm font-medium mb-1">
+                    Gambar Cabang
+                  </label>
+                  <div className="space-y-3">
+                    {/* File Upload Input */}
+                    <div className="flex items-center gap-2">
+                      <input
+                        type="file"
+                        accept="image/*"
+                        onChange={handleImageUpload}
+                        disabled={isUploading}
+                        className="block w-full text-sm text-gray-500
+                          file:mr-4 file:py-2 file:px-4
+                          file:rounded-lg file:border-0
+                          file:text-sm file:font-semibold
+                          file:bg-blue-50 file:text-blue-700
+                          hover:file:bg-blue-100
+                          disabled:opacity-50 disabled:cursor-not-allowed"
                       />
+                      {isUploading && (
+                        <div className="text-sm text-blue-600">Uploading...</div>
+                      )}
                     </div>
-                  )}
+
+                    <p className="text-xs text-gray-500">
+                      Format: JPG, PNG, GIF (Max 5MB)
+                    </p>
+
+                    {/* Image Preview */}
+                    {imagePreview && (
+                      <div className="mt-2">
+                        <p className="text-xs text-gray-500 mb-1">Preview:</p>
+                        <img 
+                          src={imagePreview} 
+                          alt="Preview" 
+                          className="w-full h-48 object-cover rounded-lg border"
+                        />
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setFormData({ ...formData, img: '' });
+                            setImagePreview('');
+                          }}
+                          className="mt-2 text-sm text-red-600 hover:text-red-700"
+                        >
+                          Hapus Gambar
+                        </button>
+                      </div>
+                    )}
+                  </div>
                 </div>
 
                 <div>

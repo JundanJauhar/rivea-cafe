@@ -103,6 +103,13 @@ Membuat cabang baru
 Update cabang
 - Body: `{ id, name, address, city, province, phone?, mapsUrl?, img?, openingHours?, isActive? }`
 
+### POST `/api/upload/branch-image`
+Upload gambar cabang
+- Body: FormData dengan field `file` (image file)
+- Response: `{ success: true, imageUrl: "/images/branches/filename.jpg" }`
+- Max size: 5MB
+- Allowed types: image/*
+
 ### DELETE `/api/branches?id=<branch_id>`
 Menghapus cabang
 
@@ -119,7 +126,7 @@ Menghapus cabang
    - Provinsi: `DI Yogyakarta`
    - Telepon: `+62 274-123456`
    - Google Maps: `https://maps.google.com/?q=...`
-   - URL Gambar: `https://example.com/rivea-yogya.jpg` (optional)
+   - **Upload Gambar**: Pilih file gambar dari komputer (JPG/PNG/GIF, max 5MB)
    - Jam Operasional: (default sudah terisi)
    - ✅ Cabang Aktif
 5. Klik **"Tambah Cabang"**
@@ -213,11 +220,32 @@ npx prisma generate
   province: "DI Yogyakarta",
   phone: "+62 274-123456",
   mapsUrl: "https://maps.google.com/?q=-7.7956,110.3695",
-  img: "https://example.com/rivea-yogya.jpg",
+  img: "/images/branches/1729012345678-rivea-yogya.jpg",
   isActive: true,
   openingHours: '{"Senin": {"open": "08:00", "close": "22:00", "closed": false}, ...}'
 }
 ```
+
+## 📸 Upload Gambar
+
+### Cara Upload:
+1. Klik tombol **"Choose File"** atau **"Pilih File"**
+2. Pilih gambar dari komputer (JPG, PNG, atau GIF)
+3. Maksimal ukuran file: **5MB**
+4. Gambar akan otomatis diupload dan preview ditampilkan
+5. Klik **"Hapus Gambar"** jika ingin mengganti
+
+### Storage:
+- Gambar disimpan di: `public/images/branches/`
+- Format nama file: `{timestamp}-{original-filename}`
+- Contoh: `1729012345678-rivea-yogya.jpg`
+- URL gambar: `/images/branches/{filename}`
+
+### Validasi:
+- ✅ Hanya file gambar (image/*)
+- ✅ Maksimal 5MB
+- ✅ Preview real-time
+- ✅ Error handling jika gagal upload
 
 ## 🎯 Keunggulan Fitur
 
@@ -228,6 +256,7 @@ npx prisma generate
 5. **Filter Smart**: Auto-grouping by location
 6. **Visual Appeal**: Gradient design yang modern
 7. **Functional**: Direct call dan maps integration
+8. **Image Upload**: Upload gambar langsung dari komputer (max 5MB)
 
 ---
 
