@@ -59,16 +59,6 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
               </li>
               <li>
                 <Link 
-                  href="/admin/gallery" 
-                  className="block py-2 px-3 rounded hover:bg-amber-50 transition"
-                  onClick={() => setSidebarOpen(false)}
-                  prefetch={true}
-                >
-                  🖼️ Gallery
-                </Link>
-              </li>
-              <li>
-                <Link 
                   href="/admin/announcements" 
                   className="block py-2 px-3 rounded hover:bg-amber-50 transition"
                   onClick={() => setSidebarOpen(false)}

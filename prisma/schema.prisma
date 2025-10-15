@@ -28,14 +28,6 @@ model MenuItem {
   category    MenuCategory @relation(fields: [categoryId], references: [id])
 }
 
-model GalleryItem {
-  id      String  @id
-  title   String?
-  caption String?
-  img     String
-  branch  String? // Cabang/lokasi (e.g., "Jakarta Pusat", "Bandung", "Surabaya")
-}
-
 model Announcement {
   id          String   @id
   title       String

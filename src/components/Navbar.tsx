@@ -37,11 +37,6 @@ export default function Navbar() {
                             <CategoryDropdown />
                         </li>
                         <li>
-                            <Link href="/galeri" className="text-gray-700 hover:text-amber-700 transition" prefetch={true}>
-                                GALERI
-                            </Link>
-                        </li>
-                        <li>
                             <Link href="/pengumuman" className="text-gray-700 hover:text-amber-700 transition" prefetch={true}>
                                 PENGUMUMAN
                             </Link>
@@ -97,16 +92,6 @@ export default function Navbar() {
                             </li>
                             <li>
                                 <CategoryDropdown isMobile={true} onLinkClick={() => setMobileMenuOpen(false)} />
-                            </li>
-                            <li>
-                                <Link 
-                                    href="/galeri" 
-                                    className="block py-2 px-4 text-gray-700 hover:bg-amber-50 hover:text-amber-700 rounded transition"
-                                    onClick={() => setMobileMenuOpen(false)}
-                                    prefetch={true}
-                                >
-                                    GALERI
-                                </Link>
                             </li>
                             <li>
                                 <Link 

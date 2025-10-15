@@ -4,11 +4,10 @@ import Link from 'next/link';
 async function getCounts() {
   const categories = await prisma.menuCategory.count();
   const items = await prisma.menuItem.count();
-  const gallery = await prisma.galleryItem.count();
   const branches = await prisma.branch.count();
   const announcements = await prisma.announcement.count();
   const reviews = await prisma.review.count({ where: { isApproved: false } });
-  return { categories, items, gallery, branches, announcements, reviews };
+  return { categories, items, branches, announcements, reviews };
 }
 
 export default async function AdminPage() {
@@ -47,19 +46,6 @@ export default async function AdminPage() {
                 <div className="w-12 h-12 flex items-center justify-center rounded-full bg-white/20">
                   <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-                  </svg>
-                </div>
-              </div>
-
-              <div className="p-5 rounded shadow-sm bg-gradient-to-r from-yellow-400 to-yellow-500 text-white flex items-center justify-between hover:scale-[1.01] transition-transform">
-                <div>
-                  <div className="text-sm opacity-90">Gallery</div>
-                  <div className="text-2xl font-bold">{stats.gallery}</div>
-                </div>
-                <div className="w-12 h-12 flex items-center justify-center rounded-full bg-white/20">
-                  <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h18v18H3z" />
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 13l4-4a3 3 0 0 1 4 0l5 5" />
                   </svg>
                 </div>
               </div>
@@ -107,10 +93,9 @@ export default async function AdminPage() {
                 <h3 className="font-semibold mb-3 text-sm sm:text-base">Quick Actions</h3>
                 <div className="grid grid-cols-2 gap-2">
                   <Link href="/admin/menu" className="text-center px-4 py-2 bg-amber-600 text-white rounded hover:bg-amber-700 transition text-sm">Manage Menu</Link>
-                  <Link href="/admin/gallery" className="text-center px-4 py-2 bg-slate-600 text-white rounded hover:bg-slate-700 transition text-sm">Manage Gallery</Link>
                   <Link href="/admin/branches" className="text-center px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition text-sm">Manage Cabang</Link>
                   <Link href="/admin/announcements" className="text-center px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700 transition text-sm">Manage Pengumuman</Link>
-                  <Link href="/admin/reviews" className="text-center px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 transition text-sm col-span-2">Manage Reviews</Link>
+                  <Link href="/admin/reviews" className="text-center px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 transition text-sm">Manage Reviews</Link>
                 </div>
               </div>
 
