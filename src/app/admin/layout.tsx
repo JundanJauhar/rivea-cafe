@@ -87,6 +87,16 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                   ⭐ Reviews
                 </Link>
               </li>
+              <li>
+                <Link 
+                  href="/admin/branches" 
+                  className="block py-2 px-3 rounded hover:bg-amber-50 transition"
+                  onClick={() => setSidebarOpen(false)}
+                  prefetch={true}
+                >
+                  📍 Lokasi Cabang
+                </Link>
+              </li>
             </ul>
             
             {/* Back to Home Link */}

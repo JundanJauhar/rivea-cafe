@@ -46,6 +46,11 @@ export default function Navbar() {
                                 PENGUMUMAN
                             </Link>
                         </li>
+                        <li>
+                            <Link href="/lokasi" className="text-gray-700 hover:text-amber-700 transition" prefetch={true}>
+                                LOKASI
+                            </Link>
+                        </li>
                     </ul>
 
                     {/* Mobile Menu Button */}
@@ -111,6 +116,16 @@ export default function Navbar() {
                                     prefetch={true}
                                 >
                                     PENGUMUMAN
+                                </Link>
+                            </li>
+                            <li>
+                                <Link 
+                                    href="/lokasi" 
+                                    className="block py-2 px-4 text-gray-700 hover:bg-amber-50 hover:text-amber-700 rounded transition"
+                                    onClick={() => setMobileMenuOpen(false)}
+                                    prefetch={true}
+                                >
+                                    LOKASI
                                 </Link>
                             </li>
                         </ul>

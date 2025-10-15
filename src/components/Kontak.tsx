@@ -18,96 +18,142 @@ export default function KontakPage() {
   }
 
   return (
-    <main className="min-h-screen bg-white py-24 px-6">
-      <div className="max-w-3xl mx-auto">
-        <h1 className="text-4xl font-serif text-amber-700 mb-4">Kontak Kami</h1>
-        <p className="text-amber-600 mb-8">
-          Punya pertanyaan, kerjasama, atau permintaan khusus? Tinggalkan pesan di bawah
-          dan kami akan menghubungi Anda.
-        </p>
-
-        {/* Social Media Links */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
-          <a 
-            href="https://wa.me/6281234567890" 
-            target="_blank" 
-            rel="noopener noreferrer"
-            className="flex items-center gap-3 bg-green-50 p-4 rounded-lg border-2 border-green-200 hover:bg-green-100 transition group"
-          >
-            <div className="w-12 h-12 bg-green-500 rounded-full flex items-center justify-center text-white text-2xl group-hover:scale-110 transition">
-              📱
-            </div>
-            <div>
-              <div className="font-semibold text-green-700">WhatsApp</div>
-              <div className="text-sm text-green-600">+62 812-3456-7890</div>
-            </div>
-          </a>
-
-          <a 
-            href="https://instagram.com/riveajogja" 
-            target="_blank" 
-            rel="noopener noreferrer"
-            className="flex items-center gap-3 bg-pink-50 p-4 rounded-lg border-2 border-pink-200 hover:bg-pink-100 transition group"
-          >
-            <div className="w-12 h-12 bg-gradient-to-br from-purple-500 via-pink-500 to-orange-500 rounded-full flex items-center justify-center text-white text-2xl group-hover:scale-110 transition">
-              📷
-            </div>
-            <div>
-              <div className="font-semibold text-pink-700">Instagram</div>
-              <div className="text-sm text-pink-600">@riveacoffee</div>
-            </div>
-          </a>
+    <main className="min-h-screen bg-gradient-to-br from-amber-50 via-white to-amber-50 py-20 px-6">
+      <div className="max-w-2xl mx-auto">
+        {/* Header */}
+        <div className="text-center mb-10">
+          <h1 className="text-3xl sm:text-4xl font-serif text-amber-700 mb-3">Hubungi Kami</h1>
+          <p className="text-amber-600 text-sm sm:text-base">
+            Punya pertanyaan atau ingin berbagi cerita? Kami siap mendengar!
+          </p>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-6 bg-amber-50 p-6 rounded-lg shadow-sm">
+        {/* Unified Card */}
+        <div className="bg-white rounded-2xl shadow-xl p-6 sm:p-8 space-y-8">
+          
+          {/* Social Media Section - Combined */}
           <div>
-            <label className="block text-sm font-medium text-amber-700">Nama</label>
-            <input
-              type="text"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              className="mt-1 block w-full rounded-md border-gray-200 shadow-sm p-3"
-              placeholder="Nama Anda"
-              required
-            />
+            <h2 className="text-lg font-semibold text-gray-800 mb-4 flex items-center gap-2">
+              <span>📱</span> Hubungi Langsung
+            </h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <a 
+                href="https://wa.me/6282256613521" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="flex items-center justify-center gap-3 bg-green-500 text-white p-4 rounded-xl hover:bg-green-600 transition-all hover:shadow-lg group"
+              >
+                <span className="text-2xl group-hover:scale-110 transition">📱</span>
+                <div className="text-left">
+                  <div className="font-semibold">WhatsApp</div>
+                  <div className="text-xs opacity-90">+62 822-5661-3521</div>
+                </div>
+              </a>
+
+              <a 
+                href="https://instagram.com/riveajogja" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="flex items-center justify-center gap-3 bg-gradient-to-r from-purple-500 via-pink-500 to-orange-500 text-white p-4 rounded-xl hover:shadow-lg transition-all group"
+              >
+                <span className="text-2xl group-hover:scale-110 transition">📷</span>
+                <div className="text-left">
+                  <div className="font-semibold">Instagram</div>
+                  <div className="text-xs opacity-90">@riveajogja</div>
+                </div>
+              </a>
+
+              <a 
+                href="https://www.tiktok.com/@riveajogja" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="flex items-center justify-center gap-3 bg-black text-white p-4 rounded-xl hover:bg-gray-800 transition-all hover:shadow-lg group"
+              >
+                <span className="text-2xl group-hover:scale-110 transition">🎵</span>
+                <div className="text-left">
+                  <div className="font-semibold">TikTok</div>
+                  <div className="text-xs opacity-90">@riveajogja</div>
+                </div>
+              </a>
+
+              <a 
+                href="https://linktr.ee/riveajogja" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="flex items-center justify-center gap-3 bg-gradient-to-r from-green-400 to-blue-500 text-white p-4 rounded-xl hover:shadow-lg transition-all group"
+              >
+                <span className="text-2xl group-hover:scale-110 transition">🔗</span>
+                <div className="text-left">
+                  <div className="font-semibold">Linktree</div>
+                  <div className="text-xs opacity-90">Semua Link</div>
+                </div>
+              </a>
+            </div>
           </div>
 
+          {/* Divider */}
+          <div className="relative">
+            <div className="absolute inset-0 flex items-center">
+              <div className="w-full border-t border-gray-200"></div>
+            </div>
+            <div className="relative flex justify-center text-sm">
+              <span className="px-4 bg-white text-gray-500">atau</span>
+            </div>
+          </div>
+
+          {/* Contact Form */}
           <div>
-            <label className="block text-sm font-medium text-amber-700">Email</label>
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="mt-1 block w-full rounded-md border-gray-200 shadow-sm p-3"
-              placeholder="email@domain.com"
-              required
-            />
-          </div>
+            <h2 className="text-lg font-semibold text-gray-800 mb-4 flex items-center gap-2">
+              <span>✉️</span> Kirim Pesan
+            </h2>
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <div>
+                <input
+                  type="text"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  className="w-full rounded-lg border border-gray-300 shadow-sm p-3 focus:border-amber-500 focus:ring-2 focus:ring-amber-200 transition"
+                  placeholder="Nama Anda"
+                  required
+                />
+              </div>
 
-          <div>
-            <label className="block text-sm font-medium text-amber-700">Pesan</label>
-            <textarea
-              value={message}
-              onChange={(e) => setMessage(e.target.value)}
-              className="mt-1 block w-full rounded-md border-gray-200 shadow-sm p-3 h-36"
-              placeholder="Tulis pesan Anda di sini..."
-              required
-            />
-          </div>
+              <div>
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="w-full rounded-lg border border-gray-300 shadow-sm p-3 focus:border-amber-500 focus:ring-2 focus:ring-amber-200 transition"
+                  placeholder="email@domain.com"
+                  required
+                />
+              </div>
 
-          <div className="flex items-center space-x-4">
-            <button
-              type="submit"
-              className="bg-amber-700 text-white px-5 py-2 rounded-md hover:bg-amber-800 transition"
-            >
-              Kirim
-            </button>
+              <div>
+                <textarea
+                  value={message}
+                  onChange={(e) => setMessage(e.target.value)}
+                  className="w-full rounded-lg border border-gray-300 shadow-sm p-3 h-32 focus:border-amber-500 focus:ring-2 focus:ring-amber-200 transition resize-none"
+                  placeholder="Tulis pesan Anda di sini..."
+                  required
+                />
+              </div>
 
-            {sent && (
-              <p className="text-sm text-amber-700">Mail client dibuka — lengkapi dan kirim pesan Anda.</p>
-            )}
+              <button
+                type="submit"
+                className="w-full bg-amber-600 text-white py-3 rounded-lg hover:bg-amber-700 transition font-semibold shadow-md hover:shadow-lg"
+              >
+                Kirim Pesan
+              </button>
+
+              {sent && (
+                <p className="text-sm text-green-600 text-center bg-green-50 p-3 rounded-lg">
+                  ✅ Mail client dibuka — lengkapi dan kirim pesan Anda.
+                </p>
+              )}
+            </form>
           </div>
-        </form>
+        </div>
       </div>
     </main>
   );

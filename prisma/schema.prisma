@@ -55,3 +55,18 @@ model Review {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }
+
+model Branch {
+  id          String   @id @default(cuid())
+  name        String   // Nama cabang (e.g., "Rivea Yogyakarta Malioboro")
+  address     String   // Alamat lengkap
+  city        String   // Kota
+  province    String   // Provinsi
+  phone       String?  // Nomor telepon cabang
+  mapsUrl     String?  // Google Maps URL
+  img         String?  // Gambar cabang
+  isActive    Boolean  @default(true)
+  openingHours String? // Jam operasional (stored as JSON string)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}

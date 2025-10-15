@@ -66,20 +66,8 @@ export default function AnnouncementsPage() {
                 className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow"
                 style={{ wordBreak: 'break-word' }}
               >
-                {/* Image - if exists */}
-                {item.img && (
-                  <div className="relative w-full bg-gray-100 overflow-hidden">
-                    <img
-                      src={item.img}
-                      alt={item.title}
-                      className="w-full h-auto max-h-[400px] object-contain bg-gray-50"
-                      style={{ display: 'block' }}
-                    />
-                  </div>
-                )}
-
-                {/* Content */}
-                <div className="p-6 sm:p-8">
+                {/* Header Section */}
+                <div className="p-6 sm:p-8 pb-4">
                   {/* Date Badge */}
                   <div className="flex items-center gap-2 text-xs sm:text-sm text-amber-600 mb-3">
                     <span className="inline-flex items-center gap-1">
@@ -91,14 +79,29 @@ export default function AnnouncementsPage() {
                     </span>
                   </div>
 
-                  {/* Title */}
-                  <h2 className="text-xl sm:text-2xl font-serif font-semibold text-amber-800 mb-4">
+                  {/* Title - First Impression */}
+                  <h2 className="text-2xl sm:text-3xl font-serif font-bold text-amber-800 mb-4 leading-tight">
                     {item.title}
                   </h2>
+                </div>
 
+                {/* Image - if exists */}
+                {item.img && (
+                  <div className="relative w-full bg-gray-100 overflow-hidden px-6">
+                    <img
+                      src={item.img}
+                      alt={item.title}
+                      className="w-full h-auto max-h-[400px] object-contain bg-gray-50 rounded-lg"
+                      style={{ display: 'block' }}
+                    />
+                  </div>
+                )}
+
+                {/* Content */}
+                <div className="p-6 sm:p-8 pt-6">
                   {/* Content */}
                   <div className="prose prose-sm sm:prose-base max-w-none">
-                    <p className="text-gray-700 whitespace-pre-wrap leading-relaxed">
+                    <p className="text-gray-700 whitespace-pre-wrap leading-relaxed text-base">
                       {item.content}
                     </p>
                   </div>
