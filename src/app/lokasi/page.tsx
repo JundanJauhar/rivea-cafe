@@ -24,6 +24,108 @@ export default function LokasiPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [selectedProvince, setSelectedProvince] = useState<string>('all');
 
+  // Function to get directions link (for navigation) - ULTRA PRECISE
+  const getDirectionsLink = (branch: Branch) => {
+    console.log('🔍 [DEBUG] Processing branch:', branch.name);
+    console.log('📍 [DEBUG] Input mapsUrl:', branch.mapsUrl);
+
+    if (!branch.mapsUrl) {
+      console.warn('⚠️ [WARNING] No mapsUrl provided, using name + address');
+      const query = `${branch.name}, ${branch.address}`;
+      return `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(query)}`;
+    }
+
+    // Method 1: Extract coordinates from @ symbol format (most common and precise)
+    // Example: https://www.google.com/maps/@-7.7925964,110.3645744,15z
+    let coordMatch = branch.mapsUrl.match(/@(-?\d+\.\d+),(-?\d+\.\d+)/);
+    if (coordMatch) {
+      const lat = coordMatch[1];
+      const lng = coordMatch[2];
+      const url = `https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}`;
+      console.log('✅ [SUCCESS] Method 1 - @ symbol format');
+      console.log('📌 [COORDS] Lat:', lat, 'Lng:', lng);
+      console.log('🔗 [URL]', url);
+      return url;
+    }
+
+    // Method 2: Extract from place URL format with coordinates
+    // Example: https://www.google.com/maps/place/Name/@-7.7925964,110.3645744,15z
+    coordMatch = branch.mapsUrl.match(/place\/[^/]+\/@(-?\d+\.\d+),(-?\d+\.\d+)/);
+    if (coordMatch) {
+      const lat = coordMatch[1];
+      const lng = coordMatch[2];
+      const url = `https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}`;
+      console.log('✅ [SUCCESS] Method 2 - place format');
+      console.log('📌 [COORDS] Lat:', lat, 'Lng:', lng);
+      console.log('🔗 [URL]', url);
+      return url;
+    }
+
+    // Method 3: Extract from query parameter
+    // Example: ?q=-7.7925964,110.3645744
+    coordMatch = branch.mapsUrl.match(/[?&]q=(-?\d+\.\d+),(-?\d+\.\d+)/);
+    if (coordMatch) {
+      const lat = coordMatch[1];
+      const lng = coordMatch[2];
+      const url = `https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}`;
+      console.log('✅ [SUCCESS] Method 3 - query parameter');
+      console.log('📌 [COORDS] Lat:', lat, 'Lng:', lng);
+      console.log('🔗 [URL]', url);
+      return url;
+    }
+
+    // Method 4: Direct coordinates format (if user inputs just coordinates)
+    // Example: -7.7925964,110.3645744
+    coordMatch = branch.mapsUrl.match(/^(-?\d+\.\d+),\s*(-?\d+\.\d+)$/);
+    if (coordMatch) {
+      const lat = coordMatch[1];
+      const lng = coordMatch[2];
+      const url = `https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}`;
+      console.log('✅ [SUCCESS] Method 4 - direct coordinates');
+      console.log('📌 [COORDS] Lat:', lat, 'Lng:', lng);
+      console.log('🔗 [URL]', url);
+      return url;
+    }
+
+    // Method 5: Extract from /data= parameter (some Google Maps URLs)
+    // Example: /data=!4m2!3m1!1s0x...!8m2!3d-7.7925964!4d110.3645744
+    coordMatch = branch.mapsUrl.match(/!3d(-?\d+\.\d+)!4d(-?\d+\.\d+)/);
+    if (coordMatch) {
+      const lat = coordMatch[1];
+      const lng = coordMatch[2];
+      const url = `https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}`;
+      console.log('✅ [SUCCESS] Method 5 - data parameter');
+      console.log('📌 [COORDS] Lat:', lat, 'Lng:', lng);
+      console.log('🔗 [URL]', url);
+      return url;
+    }
+
+    // Method 6: If it's already a Google Maps URL but no coords found, 
+    // try to use it as a place_id or search query
+    if (branch.mapsUrl.includes('google.com/maps')) {
+      console.warn('⚠️ [WARNING] Google Maps URL but no coordinates found');
+      console.log('🔄 [FALLBACK] Using original URL as-is for search');
+      
+      // Try to extract place name from URL
+      const placeMatch = branch.mapsUrl.match(/place\/([^/@?]+)/);
+      if (placeMatch) {
+        const placeName = decodeURIComponent(placeMatch[1].replace(/\+/g, ' '));
+        const url = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(placeName)}`;
+        console.log('📍 [PLACE] Extracted place name:', placeName);
+        console.log('🔗 [URL]', url);
+        return url;
+      }
+    }
+    
+    // Final fallback: use name + address for better precision
+    console.warn('❌ [FAILED] No coordinates extracted from any method');
+    console.log('🔄 [FALLBACK] Using name + address');
+    const query = `${branch.name}, ${branch.address}`;
+    const url = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(query)}`;
+    console.log('🔗 [URL]', url);
+    return url;
+  };
+
   useEffect(() => {
     fetchBranches();
   }, []);
@@ -198,16 +300,19 @@ export default function LokasiPage() {
                           </div>
                         )}
 
-                        {branch.mapsUrl && (
-                          <a
-                            href={branch.mapsUrl}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="block w-full bg-gradient-to-r from-blue-600 to-blue-700 text-white text-center py-3 rounded-lg hover:from-blue-700 hover:to-blue-800 transition font-medium"
-                          >
-                            🗺️ Buka di Google Maps
-                          </a>
-                        )}
+                        <a
+                          href={getDirectionsLink(branch)}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="block w-full bg-gradient-to-r from-blue-600 to-blue-700 text-white text-center py-3.5 rounded-lg hover:from-blue-700 hover:to-blue-800 transition-all duration-200 font-semibold shadow-lg hover:shadow-xl transform hover:scale-[1.02]"
+                        >
+                          <span className="flex items-center justify-center gap-2">
+                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
+                            </svg>
+                            Get Directions
+                          </span>
+                        </a>
                       </div>
                     </div>
                   ))}

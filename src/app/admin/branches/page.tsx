@@ -393,14 +393,84 @@ export default function BranchesAdmin() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium mb-1">Google Maps URL</label>
+                  <label className="block text-sm font-medium mb-1">
+                    Google Maps URL <span className="text-red-500">*Penting untuk Get Directions</span>
+                  </label>
                   <input
-                    type="url"
+                    type="text"
                     value={formData.mapsUrl}
                     onChange={(e) => setFormData({ ...formData, mapsUrl: e.target.value })}
-                    placeholder="https://maps.google.com/?q=..."
-                    className="w-full border rounded-lg px-3 py-2"
+                    placeholder="https://www.google.com/maps/@-7.7925964,110.3645744,17z"
+                    className="w-full border rounded-lg px-3 py-2 font-mono text-sm"
                   />
+                  
+                  {/* URL Validator */}
+                  {formData.mapsUrl && (
+                    <div className="mt-2 p-3 bg-gray-50 rounded-lg border">
+                      <p className="text-xs font-semibold mb-2">🔍 URL Validation:</p>
+                      {(() => {
+                        const url = formData.mapsUrl;
+                        const coordMatch = url.match(/@(-?\d+\.\d+),(-?\d+\.\d+)/) ||
+                                         url.match(/place\/[^/]+\/@(-?\d+\.\d+),(-?\d+\.\d+)/) ||
+                                         url.match(/[?&]q=(-?\d+\.\d+),(-?\d+\.\d+)/) ||
+                                         url.match(/^(-?\d+\.\d+),\s*(-?\d+\.\d+)$/) ||
+                                         url.match(/!3d(-?\d+\.\d+)!4d(-?\d+\.\d+)/);
+                        
+                        if (coordMatch) {
+                          const lat = coordMatch[1];
+                          const lng = coordMatch[2];
+                          return (
+                            <>
+                              <p className="text-xs text-green-600 font-medium">✅ Koordinat terdeteksi!</p>
+                              <p className="text-xs text-gray-600 mt-1">
+                                📍 Latitude: <span className="font-mono">{lat}</span>
+                              </p>
+                              <p className="text-xs text-gray-600">
+                                📍 Longitude: <span className="font-mono">{lng}</span>
+                              </p>
+                              <a
+                                href={`https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="text-xs text-blue-600 hover:underline mt-1 inline-block"
+                              >
+                                🧪 Test Direction Link →
+                              </a>
+                            </>
+                          );
+                        } else {
+                          return (
+                            <p className="text-xs text-orange-600 font-medium">
+                              ⚠️ Koordinat tidak terdeteksi. Will use address fallback.
+                            </p>
+                          );
+                        }
+                      })()}
+                    </div>
+                  )}
+
+                  <div className="mt-2 space-y-1">
+                    <p className="text-xs font-semibold text-gray-700">📍 Cara dapat URL yang BENAR:</p>
+                    <ol className="text-xs text-gray-600 list-decimal list-inside space-y-1 ml-2">
+                      <li>Buka <a href="https://www.google.com/maps" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">Google Maps</a></li>
+                      <li>Cari lokasi cabang (pastikan PIN TEPAT di lokasi!)</li>
+                      <li>Klik PIN hingga muncul info</li>
+                      <li>Copy URL dari address bar browser</li>
+                      <li>Paste di field ini</li>
+                    </ol>
+                  </div>
+
+                  <div className="mt-2 p-2 bg-blue-50 rounded border border-blue-200">
+                    <p className="text-xs font-semibold text-blue-800 mb-1">✅ Format URL yang BENAR:</p>
+                    <code className="text-xs text-blue-700 block">https://www.google.com/maps/@-7.792,110.364,17z</code>
+                    <code className="text-xs text-blue-700 block mt-1">https://www.google.com/maps/place/Rivea/@-7.792,110.364,17z</code>
+                  </div>
+
+                  <div className="mt-2 p-2 bg-red-50 rounded border border-red-200">
+                    <p className="text-xs font-semibold text-red-800 mb-1">❌ Format yang SALAH:</p>
+                    <code className="text-xs text-red-700 block">https://www.google.com/maps/search/rivea</code>
+                    <p className="text-xs text-red-600 mt-1">(Ini search query, bukan lokasi spesifik!)</p>
+                  </div>
                 </div>
 
                 <div>

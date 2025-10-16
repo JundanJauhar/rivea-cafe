@@ -1,4 +1,4 @@
-# Fitur Manajemen Lokasi Cabang
+Fitur Manajemen Lokasi Cabang
 
 ## 📝 Deskripsi
 Fitur sistem manajemen lokasi cabang yang memungkinkan admin untuk menambah, mengedit, dan menghapus informasi cabang. Customer dapat melihat semua lokasi cabang yang aktif dengan informasi lengkap.
